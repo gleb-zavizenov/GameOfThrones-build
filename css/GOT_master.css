@@ -14,7 +14,6 @@ body {
   background-image:url(../images/grungeBG.jpg);
 	background-repeat:no-repeat;
   background-position:center center;
-  background-size: cover;
 	background-color:#000000;
   font-size:16px; }
 
@@ -37,16 +36,14 @@ main {
 	height:360px;
 	background-color:grey;
 	margin:0 auto;
-	/*overflow:hidden;*/
+	overflow:hidden;
 }
 
-#houseImages { position:relative; width:4000px; transition: all .5s; }
-#houseImages img {
-  display: none;
-}
-
-#houseImages .active{
-  display: block;
+#houseImages {
+  position:relative;
+  width:4000px; 
+  transition: all .5s;
+  float:left;
 }
 
 #bottomNav { margin-top:30px; }
