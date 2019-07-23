@@ -1,94 +1,53 @@
 (() => {
-  console.log("fired");
+  console.log('fired!');
 
-  // Variable stack => get the shields / sigils
-  const sigils = document.querySelectorAll(".sigilContainer");
-  const lightbox = document.querySelector(".lightbox");
-  const closeLightboxBtn = document.querySelector(".close-lightbox");
-  const banners = document.querySelectorAll(".banner");
-  const houseVideo = document.querySelector(".house-video"),
-        bannerImages = document.querySelector("#houseImages");
+  // variable stack -> get the shields / sigils first
+  const sigils = document.querySelectorAll('.sigilContainer'),
+        lightBox = document.querySelector('.lightbox'),
+        closeButton = document.querySelector('.close-lightbox'),
+        houseVideo = document.querySelector('.house-video'),
+        bannerImages = document.querySelector("#houseImages"),
+        houseName = document.querySelector('h1');
 
-  // Function that fires every time sigil is pressed
-  function popLightBox(e){
-    // debug this so far and make sure the event handeling works
-    //debugger;
-    // if(e.target.classList.contains("stark")){
-    //   console.log("starks");
-    //   //show starks img
-    //   for(let i = 0; i < banners.length; i++){
-    //     banners[i].classList.remove("active");
-    //   }
-    //   banners[0].classList.add("active");
-    // }
-    // if(e.target.classList.contains("baratheon")){
-    //   console.log("baratheon");
-    //   //show baratheon img
-    //   for(let i = 0; i < banners.length; i++){
-    //     banners[i].classList.remove("active");
-    //   }
-    //   banners[1].classList.add("active");
-    // }
-    // if(e.target.classList.contains("lannister")){
-    //   console.log("lannister");
-    //   //show lannister img
-    //   for(let i = 0; i < banners.length; i++){
-    //     banners[i].classList.remove("active");
-    //   }
-    //   banners[2].classList.add("active");
-    // }
-    // if(e.target.classList.contains("tully")){
-    //   console.log("tully");
-    //   //show tully img
-    //   for(let i = 0; i < banners.length; i++){
-    //     banners[i].classList.remove("active");
-    //   }
-    //   banners[3].classList.add("active");
-    // }
-    // if(e.target.classList.contains("greyjoy")){
-    //   console.log("greyjoy");
-    //   //show greyjoy img
-    //   for(let i = 0; i < banners.length; i++){
-    //     banners[i].classList.remove("active");
-    //   }
-    //   banners[4].classList.add("active");
-    // }
-    // if(e.target.classList.contains("arryn")){
-    //   console.log("arryn");
-    //   //show arryn img
-    //   for(let i = 0; i < banners.length; i++){
-    //     banners[i].classList.remove("active");
-    //   }
-    //   banners[5].classList.add("active");
-    // }
-    lightbox.classList.add("show-lightbox");
+  const houseData = ["stark", "baratheon", "lannister", "tully", "greyjoy", "arryn"]
+
+  function popLightBox() {
+    // make the lightbox show up
+    lightBox.classList.add('show-lightbox');
+
     houseVideo.play();
   }
 
-  function animateBanners(){
-    //we need to get an offset that we can multiply
-    let offset = 600,
-        multiplier = this.dataset.offset;
+  function closeLightBox(event) {
+    event.preventDefault();
 
-    houseImages.style.right = `${offset * multiplier}px`;
-
+    // make the lightbox close
+    lightBox.classList.remove('show-lightbox');
+    houseVideo.currentTime = 0; // rewind the video
+    houseVideo.pause();
   }
 
-  // Adding event listener for each sigil
-  sigils.forEach(sigil => {
-    sigil.addEventListener("click", animateBanners);
-  })
+  function animateBanners() {
+    // we need an offset that we can multiply by to animate
+    // our banners to the left and make the active one show up
 
-  closeLightboxBtn.addEventListener("click", (e) =>{
-    e.preventDefault();
-    lightbox.classList.remove("show-lightbox");
-    houseVideo.currentTime = 0;
-    houseVideo.pause();
-  })
+    let offset = 600,
+        multiplier = this.dataset.offset;
+        // this is the data-offset custom data attribute
+        // on each of the sigils
+    console.log((offset * multiplier) + "px");
 
-  houseVideo.addEventListener("ended", () => {
-    lightbox.classList.remove("show-lightbox");
-    houseVideo.currentTime = 0;
-    houseVideo.pause();
-  })
+    // move the banners to the left using the product of our math
+    bannerImages.style.right = `${offset * multiplier + "px"}`;
+
+    // change house name on the page
+    houseName.textContent = 'House ' + houseData[multiplier];
+  }
+
+  //sigils.forEach(sigil => sigil.addEventListener("click", popLightBox));
+  sigils.forEach(sigil => sigil.addEventListener("click", animateBanners));
+
+
+  closeButton.addEventListener("click", closeLightBox);
+  houseVideo.addEventListener('ended', closeLightBox);
 })();
