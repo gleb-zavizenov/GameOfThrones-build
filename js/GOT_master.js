@@ -1,6 +1,5 @@
 (() => {
-  console.log('fired!');
-
+  
   // variable stack -> get the shields / sigils first
   const sigils = document.querySelectorAll('.sigilContainer'),
         lightBox = document.querySelector('.lightbox'),
@@ -22,10 +21,16 @@
     ["arryn",`House Arryn of the Eyrie is one of the Great Houses of Westeros. It has ruled over the Vale of Arryn for millennia, originally as the Kings of Mountain and Vale and more recently as Lords Paramount of the Vale and Wardens of the East under the Targaryen kings and Baratheon-Lannister kings. The nominal head of House Arryn is Robin Arryn, the Lord of the Eyrie, with his stepfather Petyr Baelish acting as Lord Protector until he reaches the age of majority. `]
   ];
 
-  function popLightBox() {
+  function popLightBox(chosen) {
     // make the lightbox show up
     lightBox.classList.add('show-lightbox');
 
+    let houseName = chosen.className.split(" ")[1];
+    houseName = houseName.charAt(0).toUpperCase() + houseName.slice(1);
+    let videoPath = `video/House-${houseName}.mp4`;
+
+    houseVideo.src = videoPath;
+    houseVideo.load();
     houseVideo.play();
   }
 
@@ -46,7 +51,6 @@
         multiplier = this.dataset.offset;
         // this is the data-offset custom data attribute
         // on each of the sigils
-    console.log((offset * multiplier) + "px");
 
     // move the banners to the left using the product of our math
     bannerImages.style.right = `${offset * multiplier + "px"}`;
@@ -54,6 +58,8 @@
     // change house name on the page
     houseName.textContent = 'House ' + houseData[multiplier][0];
     houseInfo.textContent = houseData[multiplier][1];
+    let chosenBanner = this;
+    popLightBox(chosenBanner);
   }
 
   //sigils.forEach(sigil => sigil.addEventListener("click", popLightBox));
