@@ -7,7 +7,14 @@
         houseVideo = document.querySelector('.house-video'),
         bannerImages = document.querySelector("#houseImages"),
         houseName = document.querySelector('h1'),
-        houseInfo = document.querySelector(".house-info");
+        houseInfo = document.querySelector(".house-info"),
+        playStopBtn = document.querySelector(".player-play-stop"),
+        playStopImg = document.querySelector(".play-stop"),
+        playerSound = document.querySelector(".player-sound"),
+        soundIcon = document.querySelector(".sound-icon"),
+        timeProgressFill = document.querySelector(".progress-fill"),
+        timeProgressBar = document.querySelector(".progress-bar"),
+        soundRange = document.querySelector(".sound-range");
 
   const houseData = [
     ["stark",`House Stark of Winterfell is a Great House of Westeros, ruling over the vast region known as the North from their seat in Winterfell. It is one of the oldest lines of Westerosi nobility by far, claiming a line of descent stretching back over eight thousand years. Before the Targaryen conquest, as well as during the War of the Five Kings and Daenerys Targaryen's invasion of Westeros, the leaders of House Stark ruled over the region as the Kings in the North.`],
@@ -65,9 +72,71 @@
     popLightBox(chosenBanner);
   }
 
+  function togglePlay(){
+    if(houseVideo.paused){
+      houseVideo.play();
+    } else {
+      houseVideo.pause();
+    }
+  }
+
+  function updatePlayBtn(){
+    if(this.paused){
+      playStopImg.src = "images/play-button.svg";
+    } else {
+      playStopImg.src = "images/pause.svg";
+    }
+  }
+
+  function toggleMuteIcon(){
+    if(houseVideo.volume <= 0){
+      soundIcon.src = "images/speaker.svg";
+      houseVideo.volume = 0.5;
+    } else {
+      soundIcon.src = "images/muted.svg";
+      houseVideo.volume = 0;
+    }
+  }
+
+  function handleTimeProgress(){
+    let percent = (houseVideo.currentTime/houseVideo.duration) * 100;
+    timeProgressFill.style.width = `${percent}%`;
+  }
+
+  function handleVolumeLevel(){
+    soundRange.value = this.volume;
+    if(houseVideo.volume <= 0){
+      soundIcon.src = "images/muted.svg";
+    } else {
+      soundIcon.src = "images/speaker.svg";
+    }
+  }
+
+  function handleProgressClick(e){
+    let newTime = (e.offsetX/timeProgressBar.offsetWidth) * houseVideo.duration;
+    houseVideo.currentTime = newTime;
+  }
+
+  function handleVolumeClick(){
+    houseVideo.volume = this.value;
+  }
+
   //sigils.forEach(sigil => sigil.addEventListener("click", popLightBox));
   sigils.forEach(sigil => sigil.addEventListener("click", animateBanners));
 
   closeButton.addEventListener("click", closeLightBox);
+  playStopBtn.addEventListener("click", togglePlay);
+
   houseVideo.addEventListener('ended', closeLightBox);
+  houseVideo.addEventListener('click',togglePlay);
+  houseVideo.addEventListener('play',updatePlayBtn);
+  houseVideo.addEventListener('pause',updatePlayBtn);
+  houseVideo.addEventListener("timeupdate", handleTimeProgress);
+  houseVideo.addEventListener("volumechange", handleVolumeLevel);
+
+  soundIcon.addEventListener('click',toggleMuteIcon);
+
+  timeProgressBar.addEventListener('click', handleProgressClick);
+  soundRange.addEventListener('change', handleVolumeClick);
+  soundRange.addEventListener('mousemove', handleVolumeClick);
 })();

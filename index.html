@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>DOM Traversal</title>
+<title>GOT-Build</title>
 <link href="css/meyerReset.css" rel="stylesheet" type="text/css" media="screen">
 <link href="css/GOT_master.css" rel="stylesheet" type="text/css" media="screen">
 </head>
@@ -44,9 +44,26 @@
     <p class="house-info"></p><!-- replace this with house details (github gist) -->
 
     <section class="lightbox">
-        <a href="#" class="close-lightbox">X</a>
-
-        <video controls class="house-video" src="video/House-Stark.mp4" type="video/mp4"></video>
+        <img src="images/close.svg" class="close-lightbox">
+        <div class="player">
+            <video class="house-video" src="video/House-Stark.mp4" type="video/mp4"></video>
+            <div class="player-controls">
+                <div class="player-play-stop">
+                    <img src="images/pause.svg" alt="play-stop" class="play-stop">
+                </div>
+                <div class="player-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+                <div class="player-sound">
+                    <img src="images/speaker.svg" alt="sound" class="sound-icon">
+                    <div class="sound-bar">
+                        <input type="range" name="volume" class="sound-range" min="0" max="1" step="0.05" value="1">
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
 </main>  <!--end mainContainer-->
